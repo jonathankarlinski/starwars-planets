@@ -1,22 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { planets, setPlanets } = useContext(StarWarsContext);
-
-  useEffect(() => {
-    const getPlanets = async () => {
-      const result = await fetch('https://swapi-trybe.herokuapp.com/api/planets/').then((res) => res.json());
-      return result;
-    };
-    const deleteResidents = async () => {
-      const { results } = await getPlanets();
-      results.forEach((result) => delete result.residents);
-      console.log(results);
-      setPlanets(results);
-    };
-    deleteResidents();
-  }, []);
+  const { planets, filters } = useContext(StarWarsContext);
 
   return (
     <table>
@@ -38,23 +24,24 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {planets.map((planet, index) => (
-          <tr key={ index }>
-            <td>{planet.name}</td>
-            <td>{planet.rotation_period}</td>
-            <td>{planet.orbital_period}</td>
-            <td>{planet.diameter}</td>
-            <td>{planet.climate}</td>
-            <td>{planet.gravity}</td>
-            <td>{planet.terrain}</td>
-            <td>{planet.surfaceWater}</td>
-            <td>{planet.population}</td>
-            <td>{planet.films}</td>
-            <td>{planet.created}</td>
-            <td>{planet.edited}</td>
-            <td>{planet.url}</td>
-          </tr>
-        ))}
+        {planets.filter(({ name }) => name.includes(filters.name))
+          .map((planet, index) => (
+            <tr key={ index }>
+              <td>{planet.name}</td>
+              <td>{planet.rotation_period}</td>
+              <td>{planet.orbital_period}</td>
+              <td>{planet.diameter}</td>
+              <td>{planet.climate}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.terrain}</td>
+              <td>{planet.surfaceWater}</td>
+              <td>{planet.population}</td>
+              <td>{planet.films}</td>
+              <td>{planet.created}</td>
+              <td>{planet.edited}</td>
+              <td>{planet.url}</td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );
