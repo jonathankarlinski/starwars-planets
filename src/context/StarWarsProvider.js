@@ -5,6 +5,11 @@ import StarWarsContext from './StarWarsContext';
 function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterByName, setfilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: '',
+    comparison: '',
+    value: '',
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -20,7 +25,15 @@ function StarWarsProvider({ children }) {
   }, []);
 
   return (
-    <StarWarsContext.Provider value={ { planets, filterByName, setfilterByName } }>
+    <StarWarsContext.Provider
+      value={ {
+        planets,
+        filterByName,
+        setfilterByName,
+        filterByNumericValues,
+        setFilterByNumericValues,
+      } }
+    >
       {children}
     </StarWarsContext.Provider>
   );
