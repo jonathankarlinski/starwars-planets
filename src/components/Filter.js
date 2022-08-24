@@ -5,10 +5,22 @@ function Filters() {
   const {
     setfilterByName,
     setFilterByNumericValues,
+    filterByNumericValues,
   } = useContext(StarWarsContext);
   const [columnFilter, setColumn] = useState('population');
   const [comparisonFilter, setComparison] = useState('maior que');
   const [valueFilter, setValue] = useState('0');
+
+  const filterColumns = () => {
+    const columns = ['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water'];
+    filterByNumericValues.forEach(({ column }) => {
+      if (columns.includes(column)) {
+        columns.splice(columns.indexOf(column), 1);
+      }
+    });
+    return columns;
+  };
 
   const handleSubmit = () => {
     const teste = {
@@ -16,7 +28,8 @@ function Filters() {
       comparison: comparisonFilter,
       value: valueFilter,
     };
-    setFilterByNumericValues([teste]);
+    setColumn(filterColumns()[0]);
+    setFilterByNumericValues([...filterByNumericValues, teste]);
   };
 
   return (
@@ -37,11 +50,14 @@ function Filters() {
             name="column"
             onChange={ ({ target }) => setColumn(target.value) }
           >
-            <option>population</option>
+            { filterColumns().map((column) => (
+              <option key={ column }>{column}</option>
+            ))}
+            {/* <option>population</option>
             <option>orbital_period</option>
             <option>diameter</option>
             <option>rotation_period</option>
-            <option>surface_water</option>
+            <option>surface_water</option> */}
           </select>
         </label>
         <label htmlFor="comparison">
@@ -73,6 +89,15 @@ function Filters() {
           Filtrar
         </button>
       </div>
+      <ul>
+        { filterByNumericValues.map((filter) => (
+          <li
+            key={ `${filter.value} ${filter.column} ${filter.comparison}` }
+          >
+            { `${filter.value} ${filter.column} ${filter.comparison}` }
+          </li>
+        ))}
+      </ul>
     </div>
 
   );

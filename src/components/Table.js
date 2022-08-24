@@ -1,26 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
   const { planets, filterByName, filterByNumericValues } = useContext(StarWarsContext);
+  const [filters, setFilters] = useState([]);
+
+  useEffect(() => {
+    setFilters(planets);
+  }, [planets]);
 
   const numericFilter = () => {
-    const filterName = planets.filter(({ name }) => name.includes(filterByName.name));
-    if (filterByNumericValues[0]) {
-      return filterName.filter((planet) => {
-        if (filterByNumericValues[0].comparison === 'maior que') {
-          return planet[filterByNumericValues[0].column]
-           > Number(filterByNumericValues[0].value);
-        }
-        if (filterByNumericValues[0].comparison === 'menor que') {
-          return planet[filterByNumericValues[0].column]
-           < Number(filterByNumericValues[0].value);
-        }
-        return planet[filterByNumericValues[0].column] === filterByNumericValues[0].value;
-      });
-    }
-    return filterName;
+    const { column, comparison,
+      value } = filterByNumericValues[filterByNumericValues.length - 1];
+    const newFilter = filters.filter((planet) => {
+      if (comparison === 'maior que') return planet[column] > Number(value);
+      if (comparison === 'menor que') return planet[column] < Number(value);
+      return planet[column] === value;
+    });
+    setFilters(newFilter);
   };
+
+  useEffect(() => {
+    const search = () => ((filterByNumericValues.length > 0) && numericFilter());
+    search();
+  }, [filterByNumericValues.length]);
 
   return (
     <table>
@@ -42,23 +45,24 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {numericFilter().map((planet, index) => (
-          <tr key={ index }>
-            <td>{planet.name}</td>
-            <td>{planet.rotation_period}</td>
-            <td>{planet.orbital_period}</td>
-            <td>{planet.diameter}</td>
-            <td>{planet.climate}</td>
-            <td>{planet.gravity}</td>
-            <td>{planet.terrain}</td>
-            <td>{planet.surface_water}</td>
-            <td>{planet.population}</td>
-            <td>{planet.films}</td>
-            <td>{planet.created}</td>
-            <td>{planet.edited}</td>
-            <td>{planet.url}</td>
-          </tr>
-        ))}
+        { filters.filter(({ name }) => name.includes(filterByName.name))
+          .map((planet, index) => (
+            <tr key={ index }>
+              <td>{planet.name}</td>
+              <td>{planet.rotation_period}</td>
+              <td>{planet.orbital_period}</td>
+              <td>{planet.diameter}</td>
+              <td>{planet.climate}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.terrain}</td>
+              <td>{planet.surface_water}</td>
+              <td>{planet.population}</td>
+              <td>{planet.films}</td>
+              <td>{planet.created}</td>
+              <td>{planet.edited}</td>
+              <td>{planet.url}</td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );
