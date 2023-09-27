@@ -1,106 +1,61 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
-function Filters() {
-  const {
-    setfilterByName,
-    setFilterByNumericValues,
-    filterByNumericValues,
-  } = useContext(StarWarsContext);
-  const [columnFilter, setColumn] = useState('population');
-  const [comparisonFilter, setComparison] = useState('maior que');
-  const [valueFilter, setValue] = useState('0');
+function Filter() {
+  const { planets, filterName, filterByNumericValues, setFilterByNumericValues,
+    setFilters } = useContext(StarWarsContext);
 
-  const filterColumns = () => {
-    const columns = ['population', 'orbital_period',
-      'diameter', 'rotation_period', 'surface_water'];
-    filterByNumericValues.forEach(({ column }) => {
-      if (columns.includes(column)) {
-        columns.splice(columns.indexOf(column), 1);
-      }
-    });
-    return columns;
+  useEffect(() => {
+    setFilters(planets);
+    const numericFilter = planets
+      .filter((el) => el.name.includes(filterName));
+    setFilters(numericFilter);
+
+    const newFilter = filterByNumericValues
+      .reduce((acc, filter) => acc.filter((planet) => {
+        switch (filter.comparison) {
+        case 'maior que':
+          return Number(planet[filter.column]) > Number(filter.value);
+        case 'menor que':
+          return Number(planet[filter.column]) < Number(filter.value);
+        case 'igual a':
+          return Number(planet[filter.column]) === Number(filter.value);
+        default:
+          return true;
+        }
+      }), numericFilter);
+    setFilters(newFilter);
+  }, [planets, filterName, filterByNumericValues, setFilters]);
+
+  const handleDelete = ({ target }) => {
+    const newArray = filterByNumericValues.filter((el) => el.column !== target.name);
+    setFilterByNumericValues([...newArray]);
   };
-
-  const handleSubmit = () => {
-    const teste = {
-      column: columnFilter,
-      comparison: comparisonFilter,
-      value: valueFilter,
-    };
-    setColumn(filterColumns()[0]);
-    setFilterByNumericValues([...filterByNumericValues, teste]);
-  };
-
   return (
     <div>
-      <label htmlFor="name">
-        <input
-          id="name"
-          type="text"
-          data-testid="name-filter"
-          onChange={ ({ target }) => setfilterByName({ name: target.value }) }
-        />
-      </label>
-      <div>
-        <label htmlFor="column">
-          <select
-            data-testid="column-filter"
-            id="column"
-            name="column"
-            onChange={ ({ target }) => setColumn(target.value) }
-          >
-            { filterColumns().map((column) => (
-              <option key={ column }>{column}</option>
-            ))}
-            {/* <option>population</option>
-            <option>orbital_period</option>
-            <option>diameter</option>
-            <option>rotation_period</option>
-            <option>surface_water</option> */}
-          </select>
-        </label>
-        <label htmlFor="comparison">
-          <select
-            data-testid="comparison-filter"
-            id="comparison"
-            name="comparison"
-            onChange={ ({ target }) => setComparison(target.value) }
-          >
-            <option>maior que</option>
-            <option>menor que</option>
-            <option>igual a</option>
-          </select>
-        </label>
-        <label htmlFor="value">
-          <input
-            data-testid="value-filter"
-            id="value"
-            name="value"
-            value={ valueFilter }
-            onChange={ ({ target }) => setValue(target.value) }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ handleSubmit }
-        >
-          Filtrar
-        </button>
-      </div>
-      <ul>
-        { filterByNumericValues.map((filter) => (
-          <li
-            key={ `${filter.value} ${filter.column} ${filter.comparison}` }
-          >
-            { `${filter.value} ${filter.column} ${filter.comparison}` }
+      {filterByNumericValues.map((filter, index) => (
+        <ul key={ index } data-testid="filter">
+          <li>
+            {`${filter.column} ${filter.comparison} ${filter.value}`}
+            <button
+              type="button"
+              name={ filter.column }
+              onClick={ handleDelete }
+            >
+              X
+            </button>
           </li>
-        ))}
-      </ul>
+        </ul>
+      ))}
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ () => setFilterByNumericValues([]) }
+      >
+        Remover todas filtragens
+      </button>
     </div>
-
   );
 }
 
-export default Filters;
+export default Filter;

@@ -1,34 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 
 function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
-  const [filterByName, setfilterByName] = useState({ name: '' });
+  const [filterName, setFilterName] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [filters, setFilters] = useState([]);
+
+  const getPlanets = async () => {
+    const url = 'https://swapi.py4e.com/api/planets/';
+    const response = await fetch(url);
+    const datas = await response.json();
+    return datas.results;
+  };
 
   useEffect(() => {
-    const getPlanets = async () => {
-      const result = await fetch('https://swapi-trybe.herokuapp.com/api/planets/').then((res) => res.json());
-      return result;
-    };
-    const deleteResidents = async () => {
-      const { results } = await getPlanets();
-      results.forEach((result) => delete result.residents);
-      setPlanets(results);
-    };
-    deleteResidents();
+    async function fetch() {
+      setPlanets(await getPlanets());
+    }
+    fetch();
   }, []);
+
+  const value = useMemo(() => ({
+    planets,
+    filterName,
+    setFilterName,
+    filterByNumericValues,
+    setFilterByNumericValues,
+    filters,
+    setFilters,
+  }), [
+    planets,
+    filterName,
+    setFilterName,
+    setFilterByNumericValues,
+    filterByNumericValues,
+    filters,
+    setFilters,
+  ]);
 
   return (
     <StarWarsContext.Provider
-      value={ {
-        planets,
-        filterByName,
-        setfilterByName,
-        filterByNumericValues,
-        setFilterByNumericValues,
-      } }
+      value={ value }
     >
       {children}
     </StarWarsContext.Provider>
