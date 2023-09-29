@@ -8,12 +8,14 @@ function Form() {
     setFilterByNumericValues,
     setFilters,
     filters,
+    paramFilter,
+    setParamFilter,
+    numberFilters, setNumberFilters,
   } = useContext(StarWarsContext);
   const [name, setName] = useState('');
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
-  const [numberFilters, setNumberFilters] = useState([]);
   const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
 
   const handleChange = ({ target }) => {
@@ -21,9 +23,12 @@ function Form() {
   };
 
   useEffect(() => {
+    if (column === undefined) {
+      setColumn('population');
+    }
     setFilterName(name);
     setFilterByNumericValues(numberFilters);
-  }, [name, setFilterName, numberFilters, setFilterByNumericValues]);
+  }, [name, setFilterName, numberFilters, setFilterByNumericValues, paramFilter, column]);
 
   const handleSubmit = () => {
     const newNumberFilter = {
@@ -31,12 +36,16 @@ function Form() {
       comparison,
       value,
     };
-    setNumberFilters([...numberFilters, newNumberFilter]);
-    setColumn('population');
-  };
 
-  const filtraOpcoes = (opcao) => !numberFilters.find((filtro) => (
-    opcao === filtro.column));
+    const index = paramFilter.findIndex((filter) => filter === column);
+    setColumn(paramFilter[index + 1]);
+
+    setParamFilter(
+      paramFilter.filter((param) => param !== column),
+    );
+
+    setNumberFilters([...numberFilters, newNumberFilter]);
+  };
 
   const ordenaDados = () => {
     const orderAsc = (a, b) => +a[order.column] - +b[order.column];
@@ -76,15 +85,14 @@ function Form() {
             name="column"
             onChange={ ({ target }) => setColumn(target.value) }
           >
-            {
-              ['population', 'orbital_period', 'diameter',
-                'rotation_period', 'surface_water']
-                .filter(filtraOpcoes).map((item) => (
+            {paramFilter.length === 0 ? (<option>Sem filtros</option>)
+              : (
+                paramFilter.map((item) => (
                   <option value={ item } key={ item }>
                     {item}
                   </option>
                 ))
-            }
+              )}
           </select>
         </label>
         <label htmlFor="comparison">
@@ -111,6 +119,7 @@ function Form() {
         <button
           type="button"
           data-testid="button-filter"
+          disabled={ paramFilter.length === 0 }
           onClick={ handleSubmit }
         >
           Filtrar

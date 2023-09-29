@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 
 function StarWarsProvider({ children }) {
+  const param = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
   const [planets, setPlanets] = useState([]);
   const [filterName, setFilterName] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [paramFilter, setParamFilter] = useState(param);
+  const [numberFilters, setNumberFilters] = useState([]);
 
   const getPlanets = async () => {
     const url = 'https://swapi.py4e.com/api/planets/';
@@ -30,6 +39,10 @@ function StarWarsProvider({ children }) {
     setFilterByNumericValues,
     filters,
     setFilters,
+    paramFilter,
+    setParamFilter,
+    numberFilters,
+    setNumberFilters,
   }), [
     planets,
     filterName,
@@ -38,6 +51,10 @@ function StarWarsProvider({ children }) {
     filterByNumericValues,
     filters,
     setFilters,
+    paramFilter,
+    setParamFilter,
+    numberFilters,
+    setNumberFilters,
   ]);
 
   return (
