@@ -1,6 +1,19 @@
 import React, { useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
+export function posicaoFiltro(string1, arrayParametro, posicaoParametro, string2) {
+  const index = arrayParametro.indexOf(string1);
+  const numeroValidacao = -1;
+
+  if (index !== numeroValidacao) {
+    arrayParametro.splice(index + 1, 0, string2);
+  } else {
+    arrayParametro.splice(posicaoParametro, 0, string1);
+  }
+
+  return arrayParametro;
+}
+
 function Filter() {
   const { planets,
     filterName,
@@ -24,27 +37,12 @@ function Filter() {
           return Number(planet[filter.column]) > Number(filter.value);
         case 'menor que':
           return Number(planet[filter.column]) < Number(filter.value);
-        case 'igual a':
-          return Number(planet[filter.column]) === Number(filter.value);
         default:
-          return true;
+          return Number(planet[filter.column]) === Number(filter.value);
         }
       }), numericFilter);
     setFilters(newFilter);
   }, [planets, filterName, filterByNumericValues, setFilters]);
-
-  const posicaoFiltro = (string1, arrayParametro, posicaoParametro, string2) => {
-    const index = arrayParametro.indexOf(string1);
-    const numeroValidacao = -1;
-
-    if (index !== numeroValidacao) {
-      arrayParametro.splice(index + 1, 0, string2);
-    } else {
-      arrayParametro.splice(posicaoParametro, 0, string1);
-    }
-
-    return arrayParametro;
-  };
 
   const handleDelete = ({ target }) => {
     const newArray = filterByNumericValues.filter((el) => el.column !== target.name);
