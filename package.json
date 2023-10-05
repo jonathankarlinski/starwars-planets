@@ -1,5 +1,6 @@
 {
-  "name": "sd-0x-project-react-context-hooks-starwars-datatable-filters",
+  "name": "starwars-planets",
+  "homepage": "https://jonathankarlinski.github.io/starwars-planets/",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -21,6 +22,7 @@
     ]
   },
   "scripts": {
+    "publicar": "npm run build && ./node_modules/.bin/gh-pages -d build",
     "cy": "cypress run",
     "cy:open": "cypress open",
     "start": "react-scripts start",
@@ -54,6 +56,7 @@
     "eslint": "^7.32.0",
     "eslint-config-trybe-frontend": "1.2.3",
     "eslint-plugin-sonarjs": "^0.13.0",
+    "gh-pages": "^6.0.0",
     "mocha": "^10.0.0",
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^4.2.1",
