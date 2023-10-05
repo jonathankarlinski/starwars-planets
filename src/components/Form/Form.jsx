@@ -1,6 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
-import StarWarsContext from '../context/StarWarsContext';
-import Filter from './Filter';
+import StarWarsContext from '../../context/StarWarsContext';
+import Filter from '../Filter/Filter';
+import {
+  Button,
+  DivFilter,
+  DivOrder,
+  FormCorlor,
+  InputName,
+  InputValue,
+  Label,
+  LabelName,
+  Select,
+} from './FormStyle';
 
 function Form() {
   const {
@@ -66,20 +77,23 @@ function Form() {
   };
 
   return (
-    <>
-      <form>
-        <label htmlFor="name">
-          <input
-            type="text"
-            name="name"
-            data-testid="name-filter"
-            value={ name }
-            id="name"
-            onChange={ handleChange }
-          />
-        </label>
-        <label htmlFor="column">
-          <select
+    <FormCorlor>
+      <LabelName htmlFor="name">
+        Nome do planeta
+        <InputName
+          type="text"
+          name="name"
+          data-testid="name-filter"
+          value={ name }
+          id="name"
+          placeholder="Filtre um planeta aqui..."
+          onChange={ handleChange }
+        />
+      </LabelName>
+      <DivFilter>
+        <Label htmlFor="column">
+          Coluna
+          <Select
             data-testid="column-filter"
             id="column"
             name="column"
@@ -93,10 +107,11 @@ function Form() {
                   </option>
                 ))
               )}
-          </select>
-        </label>
-        <label htmlFor="comparison">
-          <select
+          </Select>
+        </Label>
+        <Label htmlFor="comparison">
+          Operador
+          <Select
             data-testid="comparison-filter"
             id="comparison"
             name="comparison"
@@ -105,27 +120,30 @@ function Form() {
             <option>maior que</option>
             <option>menor que</option>
             <option>igual a</option>
-          </select>
-          <label htmlFor="value">
-            <input
-              data-testid="value-filter"
-              type="number"
-              name="value"
-              value={ value }
-              onChange={ ({ target }) => setValue(target.value) }
-            />
-          </label>
-        </label>
-        <button
+          </Select>
+        </Label>
+        <Label htmlFor="value">
+          Valor
+          <InputValue
+            data-testid="value-filter"
+            type="number"
+            id="value"
+            name="value"
+            value={ value }
+            onChange={ ({ target }) => setValue(target.value) }
+          />
+        </Label>
+        <Button
           type="button"
           data-testid="button-filter"
           disabled={ paramFilter.length === 0 }
           onClick={ handleSubmit }
         >
           Filtrar
-        </button>
-        <label htmlFor="sort">
-          <select
+        </Button>
+        <Label htmlFor="sort">
+          Orderar
+          <Select
             data-testid="column-sort"
             name="sort"
             id="sort"
@@ -142,43 +160,44 @@ function Form() {
                   </option>
                 ))
             }
-          </select>
-        </label>
-        <label htmlFor="asc">
-          Ascendente
-          <input
-            data-testid="column-sort-input-asc"
-            id="asc"
-            type="radio"
-            value="ASC"
-            name="sortOrder"
-            onChange={ (e) => setOrder((prevState) => (
-              { ...prevState, sort: e.target.value })) }
-          />
-        </label>
-        <label htmlFor="desc">
-          Descendente
-          <input
-            data-testid="column-sort-input-desc"
-            id="desc"
-            type="radio"
-            value="DESC"
-            name="sortOrder"
-            onChange={ (e) => setOrder((prevState) => (
-              { ...prevState, sort: e.target.value })) }
-          />
-        </label>
-        <button
+          </Select>
+        </Label>
+        <DivOrder>
+          <label htmlFor="asc">
+            <input
+              data-testid="column-sort-input-asc"
+              id="asc"
+              type="radio"
+              value="ASC"
+              name="sortOrder"
+              onChange={ (e) => setOrder((prevState) => (
+                { ...prevState, sort: e.target.value })) }
+            />
+            Ascendente
+          </label>
+          <label htmlFor="desc">
+            <input
+              data-testid="column-sort-input-desc"
+              id="desc"
+              type="radio"
+              value="DESC"
+              name="sortOrder"
+              onChange={ (e) => setOrder((prevState) => (
+                { ...prevState, sort: e.target.value })) }
+            />
+            Descendente
+          </label>
+        </DivOrder>
+        <Button
           type="button"
           data-testid="column-sort-button"
           onClick={ ordenaDados }
         >
           Ordenar
-        </button>
-      </form>
+        </Button>
+      </DivFilter>
       <Filter />
-
-    </>
+    </FormCorlor>
   );
 }
 export default Form;

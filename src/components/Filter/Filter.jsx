@@ -1,5 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import StarWarsContext from '../context/StarWarsContext';
+import StarWarsContext from '../../context/StarWarsContext';
+import {
+  ButtonDelete,
+  ButtonDeleteAll,
+  FilterDiv,
+  FiltesrDiv,
+  Span,
+} from './FilterStyle';
 
 export function posicaoFiltro(string1, arrayParametro, posicaoParametro, string2) {
   const index = arrayParametro.indexOf(string1);
@@ -86,29 +93,31 @@ function Filter() {
   };
 
   return (
-    <div>
-      {filterByNumericValues.map((filter, index) => (
-        <ul key={ index } data-testid="filter">
-          <li>
+    <FilterDiv>
+      <FiltesrDiv>
+        {filterByNumericValues.map((filter, index) => (
+          <Span key={ index } data-testid="filter">
             {`${filter.column} ${filter.comparison} ${filter.value}`}
-            <button
+            <ButtonDelete
               type="button"
               name={ filter.column }
               onClick={ handleDelete }
             >
               X
-            </button>
-          </li>
-        </ul>
-      ))}
-      <button
-        type="button"
-        data-testid="button-remove-filters"
-        onClick={ handleDeleteAll }
-      >
-        Remover todas filtragens
-      </button>
-    </div>
+            </ButtonDelete>
+          </Span>
+        ))}
+      </FiltesrDiv>
+      {filterByNumericValues.length !== 0 && (
+        <ButtonDeleteAll
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ handleDeleteAll }
+        >
+          Remover todas filtragens
+        </ButtonDeleteAll>
+      )}
+    </FilterDiv>
   );
 }
 
