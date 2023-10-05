@@ -5,7 +5,7 @@ import renderWithContext from './renderWithContext';
 import userEvent from '@testing-library/user-event';
 
 
-import { posicaoFiltro, handleDelete } from '../components/Filter';
+import { posicaoFiltro } from '../components/Filter/Filter';
 
 describe('Testes para componente filter', () => {
   test('se o botão de deletar filtro funciona', async () => {
