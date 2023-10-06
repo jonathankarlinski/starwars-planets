@@ -81,5 +81,10 @@ export const DivOrder = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  `;
+
+export const LabelOrder = styled.label`
+  display: flex;
+  flex-direction: row-reverse;
   justify-content: start;
 `;

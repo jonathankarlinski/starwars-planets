@@ -10,6 +10,7 @@ import {
   InputValue,
   Label,
   LabelName,
+  LabelOrder,
   Select,
 } from './FormStyle';
 
@@ -154,8 +155,11 @@ function Form() {
             {
               ['population', 'orbital_period', 'diameter',
                 'rotation_period', 'surface_water']
-                .map((e, index) => (
-                  <option value={ e } key={ index }>
+                .map((e) => (
+                  <option
+                    value={ e }
+                    key={ e }
+                  >
                     {e}
                   </option>
                 ))
@@ -163,7 +167,8 @@ function Form() {
           </Select>
         </Label>
         <DivOrder>
-          <label htmlFor="asc">
+          <LabelOrder htmlFor="asc">
+            Ascendente
             <input
               data-testid="column-sort-input-asc"
               id="asc"
@@ -173,9 +178,9 @@ function Form() {
               onChange={ (e) => setOrder((prevState) => (
                 { ...prevState, sort: e.target.value })) }
             />
-            Ascendente
-          </label>
-          <label htmlFor="desc">
+          </LabelOrder>
+          <LabelOrder htmlFor="desc">
+            Descendente
             <input
               data-testid="column-sort-input-desc"
               id="desc"
@@ -185,8 +190,7 @@ function Form() {
               onChange={ (e) => setOrder((prevState) => (
                 { ...prevState, sort: e.target.value })) }
             />
-            Descendente
-          </label>
+          </LabelOrder>
         </DivOrder>
         <Button
           type="button"

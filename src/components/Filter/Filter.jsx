@@ -95,8 +95,8 @@ function Filter() {
   return (
     <FilterDiv>
       <FiltesrDiv>
-        {filterByNumericValues.map((filter, index) => (
-          <Span key={ index } data-testid="filter">
+        {filterByNumericValues.map((filter) => (
+          <Span key={ filter } data-testid="filter">
             {`${filter.column} ${filter.comparison} ${filter.value}`}
             <ButtonDelete
               type="button"
