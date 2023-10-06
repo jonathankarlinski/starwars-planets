@@ -172,8 +172,6 @@ function Form() {
         </Label>
         <DivOrder>
           <LabelOrder htmlFor="asc">
-            Ascendente
-            {' '}
             <input
               data-testid="column-sort-input-asc"
               id="asc"
@@ -182,10 +180,10 @@ function Form() {
               name="sortOrder"
               onChange={ (e) => updateOrder(e) }
             />
+            {' '}
+            Ascendente
           </LabelOrder>
           <LabelOrder htmlFor="desc">
-            Descendente
-            {' '}
             <input
               data-testid="column-sort-input-desc"
               id="desc"
@@ -194,6 +192,8 @@ function Form() {
               name="sortOrder"
               onChange={ (e) => updateOrder(e) }
             />
+            {' '}
+            Descendente
           </LabelOrder>
         </DivOrder>
         <Button
