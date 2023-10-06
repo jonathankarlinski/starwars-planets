@@ -173,6 +173,7 @@ function Form() {
         <DivOrder>
           <LabelOrder htmlFor="asc">
             Ascendente
+            {' '}
             <input
               data-testid="column-sort-input-asc"
               id="asc"
@@ -184,6 +185,7 @@ function Form() {
           </LabelOrder>
           <LabelOrder htmlFor="desc">
             Descendente
+            {' '}
             <input
               data-testid="column-sort-input-desc"
               id="desc"
