@@ -77,6 +77,10 @@ function Form() {
     setFilters(orderResult);
   };
 
+  const updateOrder = (e) => {
+    setOrder((prevState) => ({ ...prevState, sort: e.target.value }));
+  };
+
   return (
     <FormCorlor>
       <LabelName htmlFor="name">
@@ -175,8 +179,7 @@ function Form() {
               type="radio"
               value="ASC"
               name="sortOrder"
-              onChange={ (e) => setOrder((prevState) => (
-                { ...prevState, sort: e.target.value })) }
+              onChange={ (e) => updateOrder(e) }
             />
           </LabelOrder>
           <LabelOrder htmlFor="desc">
@@ -187,8 +190,7 @@ function Form() {
               type="radio"
               value="DESC"
               name="sortOrder"
-              onChange={ (e) => setOrder((prevState) => (
-                { ...prevState, sort: e.target.value })) }
+              onChange={ (e) => updateOrder(e) }
             />
           </LabelOrder>
         </DivOrder>

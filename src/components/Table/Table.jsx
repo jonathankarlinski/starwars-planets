@@ -33,8 +33,8 @@ function Table() {
         </thead>
         <tbody>
           {
-            filters.map((planet, index) => (
-              <tr key={ index }>
+            filters.map((planet) => (
+              <tr key={ planet }>
                 <Td data-testid="planet-name">{planet.name}</Td>
                 <Td>{planet.rotation_period}</Td>
                 <Td>{planet.orbital_period}</Td>
