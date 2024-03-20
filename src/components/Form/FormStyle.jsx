@@ -55,11 +55,13 @@ const Input = styled.input`
 export const InputName = styled(Input)`
   color: #7B68EE;
   padding: 0.3rem;
+  font-size: 1rem;
+  width: 11rem;
 `;
 
 export const InputValue = styled(Input)`
   padding-left: 1.5rem;
-  width: 2rem;
+  width: 3.5rem;
 `;
 
 export const Button = styled.button`
@@ -70,6 +72,7 @@ export const Button = styled.button`
   cursor: pointer;
   font-size: 1rem;
   padding: 0.5rem;
+  margin-top: 1rem;
 
   &:hover {
     background: linear-gradient(rgba(123, 104, 238, 0.7), rgba(123, 104, 238, 0.7));
@@ -81,6 +84,7 @@ export const DivOrder = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-top: 1rem; 
   `;
 
 export const LabelOrder = styled.label`
