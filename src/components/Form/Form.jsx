@@ -27,7 +27,7 @@ function Form() {
   const [name, setName] = useState('');
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState('0');
+  const [value, setValue] = useState('');
   const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
 
   const handleChange = ({ target }) => {
@@ -57,6 +57,7 @@ function Form() {
     );
 
     setNumberFilters([...numberFilters, newNumberFilter]);
+    setValue('');
   };
 
   const ordenaDados = () => {
@@ -134,6 +135,7 @@ function Form() {
             type="number"
             id="value"
             name="value"
+            placeholder="0"
             value={ value }
             onChange={ ({ target }) => setValue(target.value) }
           />
@@ -141,7 +143,7 @@ function Form() {
         <Button
           type="button"
           data-testid="button-filter"
-          disabled={ paramFilter.length === 0 }
+          disabled={ paramFilter.length === 0 || value === '0' || !value }
           onClick={ handleSubmit }
         >
           Filtrar
